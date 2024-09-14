@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(MyApp)
+project(MyProga)
 
-add_executable(Laboratorka main.cpp)
+add_executable(FirstLaboratorka main.cpp)
