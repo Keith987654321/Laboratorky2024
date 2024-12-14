@@ -236,7 +236,7 @@ int findSmallestString(int** matrix, int strings, int columns)
             sumOfString += matrix[i][j];
         }
         
-        if (sumOfString < minSumOfString)
+        if (abs(sumOfString) < minSumOfString)
         {
             minSumOfString = sumOfString;
             minStringNumber = i;
@@ -247,7 +247,7 @@ int findSmallestString(int** matrix, int strings, int columns)
 }
 
 
-void multiplyAllElementsOfString(int** matrix, int columns, int stringNumber)
+void multiplyAllElementsOfStringByZero(int** matrix, int columns, int stringNumber)
 {
     for (int i = 0; i < columns; i++)
     {
@@ -271,7 +271,7 @@ void thirdTask()
     
     cout << endl;
     
-    multiplyAllElementsOfString(myMatrix, matrixColumns, findSmallestString(myMatrix, matrixStrings, matrixColumns));
+    multiplyAllElementsOfStringByZero(myMatrix, matrixColumns, findSmallestString(myMatrix, matrixStrings, matrixColumns));
     printMatrix(myMatrix, matrixStrings, matrixColumns);
     
     deleteMatrix(myMatrix, matrixStrings, matrixColumns);
@@ -410,5 +410,6 @@ int main()
     thirdTask();
     fourthTask();
 
+    system("pause");
     return 0;
 }
