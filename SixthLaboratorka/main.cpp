@@ -3,13 +3,10 @@
 упорядочить последовательность по неубыванию.
  */
 
- /*
-Дана последовательность натуральных чисел {Aj}j=1...n (n<=10000). Удалить из последовательности числа, содержащие цифру 7, но не содержащие цифру 6, 
-а среди оставшихся продублировать простые числа.
-*/
 
 
 #include <iostream>
+#include <cmath>
 using namespace std;
 
 
@@ -20,6 +17,7 @@ void fillArray(int* array, int length)
         cout << "Enter a number: ";
         cin >> array[i];
     }
+    
 }
 
 
@@ -87,7 +85,7 @@ void firstTask()
     cout << "Enter an array length ";
     cin >> arrayLength;
     
-    int* myArray = new int[arrayLength];
+    int* myArray = new int[arrayLength]{0};
     cout << endl << "Enter array elements:" << endl;
     fillArray(myArray, arrayLength);
 
@@ -285,6 +283,10 @@ void thirdTask()
 Используйте в программе только один массив.
 */
 
+/*
+Дана последовательность натуральных чисел {Aj}j=1...n (n<=10000). Удалить из последовательности числа, содержащие цифру 7, но не содержащие цифру 6, 
+а среди оставшихся продублировать простые числа.
+*/
 
 void moveElementsByOneFuther(int* array, int length, int firstIndex = 1)
 {
@@ -297,6 +299,72 @@ void moveElementsByOneFuther(int* array, int length, int firstIndex = 1)
 }
 
 
+bool isContainsSeven(int n)
+{
+    while (n != 0)
+    {
+        if (n % 10 == 7)
+        {
+            return true;
+        }
+        n /= 10;
+    }
+    
+    return false;
+}
+
+
+bool isContainsSix(int n)
+{
+    while (n != 0)
+    {
+        if (n % 10 == 6)
+        {
+            return true;
+        }
+        n /= 10;
+    }
+    
+    return false;
+}
+
+
+void deleteArrayElem(int* array, int& length, int index)
+{
+    for (int i = index; i < length - 1; i++)
+    {
+        array[i] = array[i + 1];
+    }
+    length -= 1;
+}
+
+
+void dublicateArrayElem(int* array, int& length, int index)
+{
+    for (int i = (length - 1); i >= index; i--)
+    {
+        array[i + 1] = array[i]; 
+    }
+    length += 1;
+}
+
+
+bool isPrime(int n) {
+    if (n <= 1) return false;
+    if (n <= 3) return true;
+
+    // Если число делится на 2 или 3, оно не простое
+    if (n % 2 == 0 || n % 3 == 0) return false;
+
+    // Проверяем делители от 5 до √n с шагом 6 (5, 11, 17, ...)
+    for (int i = 5; i * i <= n; i += 6) {
+        if (n % i == 0 || n % (i + 2) == 0) return false;
+    }
+
+    return true;
+}
+
+
 void fourthTask()
 {
     cout <<"\t\t\t FOURTH TASK " << endl;
@@ -306,9 +374,30 @@ void fourthTask()
     cin >> arrayLength;
     arrayLength *= 2;
     
-    int* myArray = new int[arrayLength];
+    int* myArray = new int[arrayLength] {0};
     cout << endl << "Enter array elements:" << endl;
+    arrayLength /= 2;
     fillArray(myArray, arrayLength);
+
+    for (int i = 0; i < arrayLength; i++)
+    {
+        if (isContainsSeven(myArray[i]) && !isContainsSix(myArray[i]))
+        {
+            deleteArrayElem(myArray, arrayLength, i);
+            i--;
+        }
+    }
+    
+    for (int i = 0; i < arrayLength; i++)
+    {
+        if (isPrime(myArray[i]))
+        {
+            dublicateArrayElem(myArray, arrayLength, i);
+            i++;
+        }
+    }
+
+    printArray(myArray, arrayLength);
 
     delete[] myArray;
 }
@@ -317,8 +406,9 @@ void fourthTask()
 int main()
 {
     firstTask();
-    //secondTask();
-    //thirdTask();
+    secondTask();
+    thirdTask();
+    fourthTask();
 
     return 0;
 }
