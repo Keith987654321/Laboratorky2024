@@ -32,6 +32,7 @@ int main()
     }
 
     printSquareMatrix(myMatrix, n);
+    deleteSquareMatrix(myMatrix, n);
 
     return 0;
 }

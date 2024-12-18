@@ -111,3 +111,13 @@ int findSumOfArrayElem(int* array, int length, bool sumByAbs)
 
     return counter;
 }
+
+
+void deleteSquareMatrix(int** matrix, int length)
+{
+    for (int i = 0; i < length; i++)
+    {
+        delete[] matrix[i];
+    }
+    delete[] matrix;
+}
