@@ -9,14 +9,10 @@ struct Node
 };
 
 
-// Ввести последовательность натуральных чисел. Если в последовательности нет ни одного числа, содержащего две одинаковых цифры, 
-// упорядочить последовательность по невозрастанию последней цифры числа. В противном случае удалить из последовательности числа, 
-// начинающиеся четной цифрой и продублировать остальные числа. Последовательность хранить в односвязном списке.
-
-void createList(Node* head, unsigned int n) // Создаёт forward_list
+void makeList(Node* head, int n) 
 {
     Node* p = head;
-    for (unsigned int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
         Node* q = new Node;
         p->next = q;
@@ -30,7 +26,7 @@ void createList(Node* head, unsigned int n) // Создаёт forward_list
 }
 
 
-void printList(Node* head) // Выводит лист
+void printList(Node* head) 
 {
     Node* p = head;
     while (p->next != nullptr)
@@ -42,7 +38,7 @@ void printList(Node* head) // Выводит лист
 }
 
 
-void clearList(Node* head) // Удаляет весь лист
+void clearList(Node* head) 
 {
     Node* p = head;
     while (p->next != nullptr)
@@ -55,7 +51,7 @@ void clearList(Node* head) // Удаляет весь лист
 }
 
 
-bool containsIdenticalDigits(int n) // Проверяет, содержиться ли одинаковые цифры в числе
+bool containsIdenticalDigits(int n) 
 {
     n = abs(n);
 
@@ -78,7 +74,7 @@ bool containsIdenticalDigits(int n) // Проверяет, содержитьс�
 }
 
 
-bool doesListContainsNumberWithIdenticalDigits(Node* head) // Проверяет, есть ли в листе числа, состоящих из повторяющихся цифр
+bool doesListContainsNumberWithIdenticalDigits(Node* head) 
 {
     Node* p = head;
     while (p->next != nullptr)
@@ -93,25 +89,13 @@ bool doesListContainsNumberWithIdenticalDigits(Node* head) // Проверяет
 }
 
 
-int getLastDigit(int n) // Выдаёт последнюю цифру числа
+int getLastDigit(int n) 
 {
     return abs(n) % 10;
 }
 
 
-void sortListByLastDigit(Node* head) // Сортирует лист по невозрастанию последней цифры числа
-{
-    Node* p = head->next;
-    for (Node * a = p; a->next != nullptr; a = a->next)
-        for (Node * b = a->next; ; b = b->next)
-        {
-            if (getLastDigit(a->data) < getLastDigit(b->data)) swap(a->data, b->data);
-            if (b->next == nullptr) break;
-        }
-}
-
-
-int getFirstDigit(int n) // Выдаёт последнюю цифру числа
+int getFirstDigit(int n) 
 {
     while (n > 9)
     {
@@ -121,7 +105,7 @@ int getFirstDigit(int n) // Выдаёт последнюю цифру числ�
 }
 
 
-void removeElemFromList(Node* head, Node* elem) // Удаляет определенный элемент из листа
+void removeElemFromList(Node* head, Node* elem) 
 {
     Node* p = head;
     while (p->next != nullptr)
@@ -135,11 +119,10 @@ void removeElemFromList(Node* head, Node* elem) // Удаляет определ
         }
         p = p->next;
     }
-    cout << "Not found\n";
 }
 
 
-void copyElemFromList(Node* head, Node* elem) // Дублирует определенный элемент листа
+void copyElemFromList(Node* head, Node* elem) 
 {
     Node* p = head;
     while (p->next != nullptr)
@@ -154,65 +137,55 @@ void copyElemFromList(Node* head, Node* elem) // Дублирует опреде
         }
         p = p->next;
     }
-    cout << "Not found\n";
 }
 
 
-void deleteNumbersStartsWithEvenDigit(Node* head) // Удаляет все элементы с числами, начинающимися с чётной цифры
-{
-    Node* p = head;
-    while (p->next != nullptr)
-    {
-        if ((getFirstDigit(p->next->data)) % 2 == 0)
-        {
-            removeElemFromList(head, p->next);
-        }
-        else
-        {
-            p = p->next;
-        } 
-    }
-}
-
-
-void makeCopyOfEachElem(Node* head) // Делает дубликаты всех элементов листа
-{
-    Node* p = head;
-    while (p->next != nullptr)
-    {
-        copyElemFromList(head, p->next);
-        p = p->next->next;
-    }
-}
+/* Ввести последовательность натуральных чисел. Если в последовательности нет ни одного числа, содержащего две одинаковых цифры, 
+ упорядочить последовательность по невозрастанию последней цифры числа. В противном случае удалить из последовательности числа, 
+ начинающиеся четной цифрой и продублировать остальные числа. Последовательность хранить в односвязном списке.*/
 
 
 int main() 
 {
-    
-    unsigned int n;
-    cout << "Enter list length: ";
+    Node* head = new Node{nullptr, 0};
+    int n;
+    cout << "Введите длину списка: ";
     cin >> n;
-
-    Node* head = new Node{nullptr, 0}; // Создаём "головной" элемент листа
-    head->next = nullptr;             // head->next == (*head).next
-    head->data = 0;                  // head->data == (*head).data
-
-    createList(head,  n);
+    makeList(head,  n);
     
     if (!doesListContainsNumberWithIdenticalDigits(head))
     {
-        sortListByLastDigit(head);
+        Node* p = head->next;
+        for (Node * a = p; a->next != nullptr; a = a->next)
+            for (Node * b = a->next; ; b = b->next)
+            {
+                if (getLastDigit(a->data) < getLastDigit(b->data)) swap(a->data, b->data);
+                if (b->next == nullptr) break;
+            }
     }
     else
     {
-        deleteNumbersStartsWithEvenDigit(head);
-        printList(head);
-        makeCopyOfEachElem(head);
+        Node* p = head;
+        while (p->next != nullptr)
+        {
+            if ((getFirstDigit(p->next->data)) % 2 == 0)
+            {
+                removeElemFromList(head, p->next);
+            }
+            else
+            {
+                p = p->next;
+            } 
+        }
+        p = head;
+        while (p->next != nullptr)
+        {
+            copyElemFromList(head, p->next);
+            p = p->next->next;
+        }
     }
     
     printList(head);
-
     clearList(head);
-    system("pause");
     return 0;
 }
